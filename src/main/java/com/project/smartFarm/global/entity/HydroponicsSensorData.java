@@ -1,6 +1,6 @@
 package com.project.smartFarm.global.entity;
 
-import com.project.smartFarm.global.type.SensorType;
+import com.project.smartFarm.global.type.HydroponicsSensorType;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,19 +16,18 @@ public class HydroponicsSensorData {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn
+    @ManyToOne(cascade = {CascadeType.ALL})
     private Hydroponics hydroponics;
 
     @Enumerated(value = EnumType.STRING)
-    private SensorType type;
+    private HydroponicsSensorType type;
 
     private int sensorId;
 
     private int value;
 
     @Builder
-    public HydroponicsSensorData(Long id, Hydroponics hydroponics, SensorType type, int sensorId, int value) {
+    public HydroponicsSensorData(Long id, Hydroponics hydroponics, HydroponicsSensorType type, int sensorId, int value) {
         this.id = id;
         this.hydroponics = hydroponics;
         this.type = type;
