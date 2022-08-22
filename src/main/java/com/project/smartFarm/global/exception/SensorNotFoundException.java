@@ -1,6 +1,5 @@
-package com.project.smartFarm.domain.hydroponics.exception;
+package com.project.smartFarm.global.exception;
 
-import com.project.smartFarm.global.exception.BusinessException;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
