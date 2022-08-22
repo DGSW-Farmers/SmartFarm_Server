@@ -1,6 +1,6 @@
 package com.project.smartFarm.domain.hydroponics.service;
 
-import com.project.smartFarm.domain.hydroponics.exception.SensorNotFoundException;
+import com.project.smartFarm.global.exception.SensorNotFoundException;
 import com.project.smartFarm.domain.hydroponics.presentation.dto.response.SensorDataDetailedResponse;
 import com.project.smartFarm.domain.hydroponics.presentation.dto.response.SensorDataListResponse;
 import com.project.smartFarm.domain.hydroponics.presentation.dto.response.SensorDataResponse;
