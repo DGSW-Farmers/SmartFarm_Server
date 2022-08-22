@@ -1,6 +1,7 @@
 package com.project.smartFarm.global.entity;
 
 import com.project.smartFarm.global.type.HydroponicsSensorType;
+import com.project.smartFarm.global.type.SoilSensorType;
 import lombok.*;
 
 import javax.persistence.*;
@@ -17,14 +18,14 @@ public class SoilSensorData {
     private Soil soil;
 
     @Enumerated(value = EnumType.STRING)
-    private HydroponicsSensorType type;
+    private SoilSensorType type;
 
     private int sensorId;
 
     private int value;
 
     @Builder
-    public SoilSensorData(Long id, Soil soil, HydroponicsSensorType type, int sensorId, int value) {
+    public SoilSensorData(Long id, Soil soil, SoilSensorType type, int sensorId, int value) {
         this.id = id;
         this.soil = soil;
         this.type = type;
