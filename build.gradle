@@ -17,6 +17,11 @@ dependencies {
 	compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.22'
 	annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.22'
 
+	// TCP
+	implementation 'org.springframework.boot:spring-boot-starter-integration'
+	implementation 'org.springframework.integration:spring-integration-ip'
+	annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+
 	// DB
 	implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.29'
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: '2.7.2'
