@@ -29,4 +29,16 @@ public class MessageService {
         return DEFAULT_RESPONSE;
     }
 
+    // 받은 데이터를 해석하여 저장
+    public void interpretationData() {
+
+    }
+
+    // 데이터베이스에 업데이트
+    public void updateSensorData() {
+
+
+
+    }
+
 }
