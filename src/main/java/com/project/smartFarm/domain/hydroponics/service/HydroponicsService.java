@@ -1,13 +1,12 @@
 package com.project.smartFarm.domain.hydroponics.service;
 
 import com.project.smartFarm.global.exception.SensorNotFoundException;
-import com.project.smartFarm.domain.hydroponics.presentation.dto.response.SensorDataDetailedResponse;
-import com.project.smartFarm.domain.hydroponics.presentation.dto.response.SensorDataListResponse;
-import com.project.smartFarm.domain.hydroponics.presentation.dto.response.SensorDataResponse;
 import com.project.smartFarm.global.entity.HydroponicsSensorData;
-import com.project.smartFarm.global.repository.HydroponicsRepository;
+import com.project.smartFarm.global.presentation.dto.response.SensorDataDetailedResponse;
+import com.project.smartFarm.global.presentation.dto.response.SensorDataListResponse;
+import com.project.smartFarm.global.presentation.dto.response.SensorDataResponse;
 import com.project.smartFarm.global.repository.HydroponicsSensorDataRepository;
-import com.project.smartFarm.global.type.HydroponicsSensorType;
+import com.project.smartFarm.global.type.SensorType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +17,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class HydroponicsService {
 
-    private final HydroponicsRepository hydroponicsRepository;
     private final HydroponicsSensorDataRepository hydroponicsSensorDataRepository;
 
     // 모든 센서 값
@@ -40,7 +38,7 @@ public class HydroponicsService {
     }
     
     // 센서 종류의 모든 센서 값 가져오기
-    public SensorDataListResponse getSensorByType(HydroponicsSensorType type) {
+    public SensorDataListResponse getSensorByType(SensorType type) {
 
         List<HydroponicsSensorData> list = hydroponicsSensorDataRepository.findAllByType(type);
 
@@ -58,7 +56,7 @@ public class HydroponicsService {
     }
 
     // 센서 종류와 센서 ID로 값 가져오기
-    public SensorDataResponse getSensorByTypeAndId(HydroponicsSensorType type, int sensorId) {
+    public SensorDataResponse getSensorByTypeAndId(SensorType type, int sensorId) {
         HydroponicsSensorData data = hydroponicsSensorDataRepository.findByTypeAndSensorId(type, sensorId)
                 .orElseThrow(() -> {
                     throw SensorNotFoundException.EXCEPTION;

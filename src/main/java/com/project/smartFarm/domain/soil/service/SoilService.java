@@ -1,13 +1,12 @@
 package com.project.smartFarm.domain.soil.service;
 
-import com.project.smartFarm.domain.soil.presentation.dto.response.SensorDataDetailedResponse;
-import com.project.smartFarm.domain.soil.presentation.dto.response.SensorDataListResponse;
-import com.project.smartFarm.domain.soil.presentation.dto.response.SensorDataResponse;
+import com.project.smartFarm.global.presentation.dto.response.SensorDataDetailedResponse;
+import com.project.smartFarm.global.presentation.dto.response.SensorDataListResponse;
+import com.project.smartFarm.global.presentation.dto.response.SensorDataResponse;
 import com.project.smartFarm.global.entity.SoilSensorData;
 import com.project.smartFarm.global.exception.SensorNotFoundException;
-import com.project.smartFarm.global.repository.SoilRepository;
 import com.project.smartFarm.global.repository.SoilSensorDataRepository;
-import com.project.smartFarm.global.type.SoilSensorType;
+import com.project.smartFarm.global.type.SensorType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +17,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class SoilService {
 
-    private final SoilRepository soilRepository;
     private final SoilSensorDataRepository soilSensorDataRepository;
 
     // 모든 센서 값
@@ -39,7 +37,7 @@ public class SoilService {
     }
 
     // 센서 종류의 모든 센서 값 가져오기
-    public SensorDataListResponse getSensorByType(SoilSensorType type) {
+    public SensorDataListResponse getSensorByType(SensorType type) {
 
         List<SoilSensorData> list = soilSensorDataRepository.findAllByType(type);
 
@@ -57,7 +55,7 @@ public class SoilService {
     }
 
     // 센서 종류와 센서 ID로 값 가져오기
-    public SensorDataResponse getSensorByTypeAndId(SoilSensorType type, int sensorId) {
+    public SensorDataResponse getSensorByTypeAndId(SensorType type, int sensorId) {
         SoilSensorData data = soilSensorDataRepository.findByTypeAndSensorId(type, sensorId)
                 .orElseThrow(() -> {
                     throw SensorNotFoundException.EXCEPTION;
