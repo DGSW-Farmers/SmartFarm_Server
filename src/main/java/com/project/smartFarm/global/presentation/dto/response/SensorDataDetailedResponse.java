@@ -1,6 +1,6 @@
-package com.project.smartFarm.domain.soil.presentation.dto.response;
+package com.project.smartFarm.global.presentation.dto.response;
 
-import com.project.smartFarm.global.type.SoilSensorType;
+import com.project.smartFarm.global.type.SensorType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,7 +9,7 @@ import lombok.Getter;
 @Builder
 public class SensorDataDetailedResponse {
 
-    private SoilSensorType type;
+    private SensorType type;
 
     private int sensorId;
 

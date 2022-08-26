@@ -1,4 +1,4 @@
-package com.project.smartFarm.domain.hydroponics.presentation.dto.response;
+package com.project.smartFarm.global.presentation.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
