@@ -21,10 +21,10 @@ public class HydroponicsSensorData {
 
     private int sensorId;
 
-    private int value;
+    private String value;
 
     @Builder
-    public HydroponicsSensorData(Long id, SensorType type, int sensorId, int value) {
+    public HydroponicsSensorData(Long id, SensorType type, int sensorId, String value) {
         this.id = id;
         this.type = type;
         this.sensorId = sensorId;
