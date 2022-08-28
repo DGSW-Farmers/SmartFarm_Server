@@ -7,10 +7,7 @@ import com.project.smartFarm.global.type.SensorType;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Api(value = "수경재배", tags = {"농장 - 수경재배"})
 @RestController
@@ -42,6 +39,16 @@ public class HydroponicsController {
             @PathVariable("sensor-id") int sensorId
     ) {
         return hydroponicsService.getSensorByTypeAndId(type, sensorId);
+    }
+
+    @ApiOperation(value = "수경 센서의 (LED, 워터펌프, 환풍기 조작)")
+    @PostMapping("/{sensor-type}/{sensor-id}")
+    public SensorDataResponse modifySensorData(
+            @PathVariable("sensor-type") SensorType type,
+            @PathVariable("sensor-id") int sensorId,
+            @RequestParam("value") String value
+    ) {
+        return hydroponicsService.modifySensor(type, sensorId, value);
     }
 
 }
