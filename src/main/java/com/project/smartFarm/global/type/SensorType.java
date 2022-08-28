@@ -6,6 +6,7 @@ public enum SensorType {
     ALL_TEMPERATURE, // 온도
     ALL_HUMIDITY, // 습도
     ALL_LED, // LED
+    ALL_PAN, // 팬
 
     // 수경
     WATER_TEMPERATURE, // 수온
