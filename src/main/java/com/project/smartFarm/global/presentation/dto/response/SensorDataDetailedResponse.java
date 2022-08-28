@@ -13,6 +13,6 @@ public class SensorDataDetailedResponse {
 
     private int sensorId;
 
-    private int value;
+    private String value;
 
 }
