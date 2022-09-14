@@ -3,7 +3,6 @@ package com.project.smartFarm.global.exception;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
-@Getter
 public class SensorNotFoundException extends BusinessException {
 
     public final static SensorNotFoundException EXCEPTION = new SensorNotFoundException();

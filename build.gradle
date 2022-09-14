@@ -17,6 +17,9 @@ dependencies {
 	compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.22'
 	annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.22'
 
+	// WebSocket
+	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+
 	// TCP
 	implementation 'org.springframework.boot:spring-boot-starter-integration'
 	implementation 'org.springframework.integration:spring-integration-ip'

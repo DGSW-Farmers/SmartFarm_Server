@@ -1,18 +1,21 @@
 package com.project.smartFarm.domain.hydroponics.service;
 
-import com.project.smartFarm.domain.hydroponics.exception.SensorDataTransferFailedException;
+import com.project.smartFarm.domain.hydroponics.entity.Hydroponics;
+import com.project.smartFarm.domain.hydroponics.presentation.dto.request.SaveSensorDataRequest;
+import com.project.smartFarm.domain.hydroponics.repository.HydroponicsRepository;
+import com.project.smartFarm.global.exception.DeviceAlreadyExistsException;
+import com.project.smartFarm.global.exception.DeviceNotFoundException;
 import com.project.smartFarm.global.exception.SensorNotFoundException;
-import com.project.smartFarm.global.entity.HydroponicsSensorData;
+import com.project.smartFarm.domain.hydroponics.entity.HydroponicsSensorData;
 import com.project.smartFarm.global.presentation.dto.response.SensorDataDetailedResponse;
 import com.project.smartFarm.global.presentation.dto.response.SensorDataListResponse;
 import com.project.smartFarm.global.presentation.dto.response.SensorDataResponse;
-import com.project.smartFarm.global.repository.HydroponicsSensorDataRepository;
+import com.project.smartFarm.domain.hydroponics.repository.HydroponicsSensorDataRepository;
 import com.project.smartFarm.global.type.SensorType;
-import com.project.smartFarm.iot.service.MessageService;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,10 +23,11 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class HydroponicsService {
 
-    private final MessageService messageService;
     private final HydroponicsSensorDataRepository hydroponicsSensorDataRepository;
+    private final HydroponicsRepository hydroponicsRepository;
 
     // 모든 센서 값
+    @Transactional(readOnly = true)
     public SensorDataListResponse getSensor() {
 
         List<HydroponicsSensorData> list = hydroponicsSensorDataRepository.findAll();
@@ -42,6 +46,7 @@ public class HydroponicsService {
     }
     
     // 센서 종류의 모든 센서 값 가져오기
+    @Transactional(readOnly = true)
     public SensorDataListResponse getSensorByType(SensorType type) {
 
         List<HydroponicsSensorData> list = hydroponicsSensorDataRepository.findAllByType(type);
@@ -60,6 +65,7 @@ public class HydroponicsService {
     }
 
     // 센서 종류와 센서 ID로 값 가져오기
+    @Transactional(readOnly = true)
     public SensorDataResponse getSensorByTypeAndId(SensorType type, int sensorId) {
         HydroponicsSensorData data = hydroponicsSensorDataRepository.findByTypeAndSensorId(type, sensorId)
                 .orElseThrow(() -> {
@@ -78,37 +84,30 @@ public class HydroponicsService {
     }
 
     @Transactional
-    public SensorDataResponse modifySensor(SensorType type, int sensorId, String value) {
-
-        HydroponicsSensorData found = hydroponicsSensorDataRepository.findByTypeAndSensorId(type, sensorId)
-                .orElseThrow(() -> {
-                    throw SensorNotFoundException.EXCEPTION;
+    public void registerDevice(int deviceId) {
+        hydroponicsRepository.findByDeviceId(deviceId)
+                .ifPresent(m -> {
+                    throw DeviceAlreadyExistsException.EXCEPTION;
                 });
 
-        List<HydroponicsSensorData> list = hydroponicsSensorDataRepository.findAll();
+        hydroponicsRepository.save(new Hydroponics(deviceId));
+    }
 
-        if(messageService.formatData(list, found.getType(), found.getSensorId(), value)) {
-            found = HydroponicsSensorData.builder()
-                    .id(found.getId())
-                    .sensorId(found.getSensorId())
-                    .type(found.getType())
-                    .value(value)
-                    .build();
+    @Transactional
+    public void saveSensorData(int deviceId, SaveSensorDataRequest request) {
 
-            found = hydroponicsSensorDataRepository.save(found);
-        } else {
-            throw SensorDataTransferFailedException.EXCEPTION;
-        }
+        Hydroponics device = hydroponicsRepository.findByDeviceId(deviceId)
+                .orElseThrow(() -> {
+                    throw DeviceNotFoundException.EXCEPTION;
+                });
 
-        SensorDataDetailedResponse sensorData = SensorDataDetailedResponse.builder()
-                .sensorId(found.getSensorId())
-                .type(found.getType())
-                .value(found.getValue())
+        HydroponicsSensorData data = HydroponicsSensorData.builder()
+                .sensorId(request.getSensorId())
+                .type(request.getType())
+                .value(request.getValue())
                 .build();
 
-        return SensorDataResponse.builder()
-                .sensorData(sensorData)
-                .build();
+        device.addSensorData(data);
     }
 
 }

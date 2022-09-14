@@ -1,5 +1,6 @@
 package com.project.smartFarm.domain.hydroponics.presentation;
 
+import com.project.smartFarm.domain.hydroponics.presentation.dto.request.SaveSensorDataRequest;
 import com.project.smartFarm.domain.hydroponics.service.HydroponicsService;
 import com.project.smartFarm.global.presentation.dto.response.SensorDataListResponse;
 import com.project.smartFarm.global.presentation.dto.response.SensorDataResponse;
@@ -7,6 +8,7 @@ import com.project.smartFarm.global.type.SensorType;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @Api(value = "수경재배", tags = {"농장 - 수경재배"})
@@ -41,14 +43,23 @@ public class HydroponicsController {
         return hydroponicsService.getSensorByTypeAndId(type, sensorId);
     }
 
-    @ApiOperation(value = "수경 센서의 (LED, 워터펌프, 환풍기 조작)")
-    @PostMapping("/{sensor-type}/{sensor-id}")
-    public SensorDataResponse modifySensorData(
-            @PathVariable("sensor-type") SensorType type,
-            @PathVariable("sensor-id") int sensorId,
-            @RequestParam("value") String value
+    @ApiOperation(value = "수경 기기 등록")
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping("/register/{device-id}")
+    public void registerDevice(
+            @PathVariable("device-id") int deviceId
     ) {
-        return hydroponicsService.modifySensor(type, sensorId, value);
+        hydroponicsService.registerDevice(deviceId);
+    }
+
+    @ApiOperation(value = "센서값 저장")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PostMapping("/save/{device-id}")
+    public void saveSensorData(
+            @PathVariable("device-id") int deviceId,
+            @RequestBody SaveSensorDataRequest request
+    ) {
+        hydroponicsService.saveSensorData(deviceId, request);
     }
 
 }

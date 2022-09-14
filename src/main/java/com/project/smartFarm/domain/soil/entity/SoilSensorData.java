@@ -1,16 +1,13 @@
-package com.project.smartFarm.global.entity;
+package com.project.smartFarm.domain.soil.entity;
 
 import com.project.smartFarm.global.type.SensorType;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Getter @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class HydroponicsSensorData {
+public class SoilSensorData {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,7 +21,7 @@ public class HydroponicsSensorData {
     private String value;
 
     @Builder
-    public HydroponicsSensorData(Long id, SensorType type, int sensorId, String value) {
+    public SoilSensorData(Long id, SensorType type, int sensorId, String value) {
         this.id = id;
         this.type = type;
         this.sensorId = sensorId;

@@ -1,6 +1,6 @@
-package com.project.smartFarm.global.repository;
+package com.project.smartFarm.domain.hydroponics.repository;
 
-import com.project.smartFarm.global.entity.HydroponicsSensorData;
+import com.project.smartFarm.domain.hydroponics.entity.HydroponicsSensorData;
 import com.project.smartFarm.global.type.SensorType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
