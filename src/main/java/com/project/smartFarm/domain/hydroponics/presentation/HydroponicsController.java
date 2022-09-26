@@ -1,9 +1,8 @@
 package com.project.smartFarm.domain.hydroponics.presentation;
 
 import com.project.smartFarm.domain.hydroponics.presentation.dto.request.SaveSensorDataRequest;
+import com.project.smartFarm.domain.hydroponics.presentation.dto.response.SensorDataResponse;
 import com.project.smartFarm.domain.hydroponics.service.HydroponicsService;
-import com.project.smartFarm.global.presentation.dto.response.SensorDataListResponse;
-import com.project.smartFarm.global.presentation.dto.response.SensorDataResponse;
 import com.project.smartFarm.global.type.SensorType;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -19,41 +18,8 @@ public class HydroponicsController {
 
     private final HydroponicsService hydroponicsService;
 
-    @ApiOperation(value = "수경 센서 값 모두 가져오기")
-    @GetMapping("")
-    public SensorDataListResponse getSensorData() {
-        return hydroponicsService.getSensor();
-
-    }
-
-    @ApiOperation(value = "수경 센서 종류의 모든 값 가져오기")
-    @GetMapping("/{sensor-type}")
-    public SensorDataListResponse getSensorByType(
-            @PathVariable("sensor-type") SensorType type
-    ) {
-        return hydroponicsService.getSensorByType(type);
-    }
-
-    @ApiOperation(value = "수경 센서 종류와 센서 ID로 값 가져오기")
-    @GetMapping("/{sensor-type}/{sensor-id}")
-    public SensorDataResponse getSensorByTypeAndSensorId(
-            @PathVariable("sensor-type") SensorType type,
-            @PathVariable("sensor-id") int sensorId
-    ) {
-        return hydroponicsService.getSensorByTypeAndId(type, sensorId);
-    }
-
-    @ApiOperation(value = "수경 기기 등록")
-    @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/register/{device-id}")
-    public void registerDevice(
-            @PathVariable("device-id") int deviceId
-    ) {
-        hydroponicsService.registerDevice(deviceId);
-    }
-
     @ApiOperation(value = "센서값 저장")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/save/{device-id}")
     public void saveSensorData(
             @PathVariable("device-id") int deviceId,
@@ -62,4 +28,12 @@ public class HydroponicsController {
         hydroponicsService.saveSensorData(deviceId, request);
     }
 
+    @ApiOperation("센서 평균 값 가져오기")
+    @GetMapping("/avg/{device-id}/{sensor-type}")
+    public SensorDataResponse getAvgSensorData(
+            @PathVariable("device-id") int deviceId,
+            @PathVariable("sensor-type") SensorType type
+    ) {
+        return hydroponicsService.getAvgSensorData(deviceId, type);
+    }
 }

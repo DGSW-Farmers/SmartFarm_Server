@@ -12,11 +12,14 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "hydroponics_sensor_data")
 public class HydroponicsSensorData {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    private int deviceId;
 
     @Enumerated(value = EnumType.STRING)
     private SensorType type;
@@ -28,15 +31,9 @@ public class HydroponicsSensorData {
     @CreationTimestamp
     private LocalDateTime saveTime;
 
-    @ManyToOne
-    @JoinColumn(name = "device_id")
-    private Hydroponics device;
-    public void setDevice(Hydroponics device) {
-        this.device = device;
-    }
-
     @Builder
-    public HydroponicsSensorData(SensorType type, int sensorId, String value) {
+    public HydroponicsSensorData(int deviceId, SensorType type, int sensorId, String value) {
+        this.deviceId = deviceId;
         this.type = type;
         this.sensorId = sensorId;
         this.value = value;
