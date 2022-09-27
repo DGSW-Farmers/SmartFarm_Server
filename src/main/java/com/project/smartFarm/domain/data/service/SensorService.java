@@ -45,7 +45,9 @@ public class SensorService {
 
     @Transactional(readOnly = true)
     public AvgListResponse getAvgData(int deviceId) {
-        List<SensorData> list = sensorDataRepository.findAvgByDeviceId(deviceId);
+        Device device = deviceRepository.findByDeviceId(deviceId)
+                .orElseThrow(DeviceNotFoundException::new);
+        List<SensorData> list = sensorDataRepository.findAllByDevicAvgSensorData(device);
 
         List<AvgSensorDataResponse> avgList = list.stream().map(it ->
                 AvgSensorDataResponse.builder()

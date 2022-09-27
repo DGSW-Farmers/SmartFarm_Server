@@ -39,7 +39,7 @@ public class DeviceController {
 
     @ApiOperation("기기를 종료합니다")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PostMapping("/end/{device-id}")
+    @PostMapping("/termite/{device-id}")
     public void TermiteDevice(
             @PathVariable("device-id") int deviceId
     ) {

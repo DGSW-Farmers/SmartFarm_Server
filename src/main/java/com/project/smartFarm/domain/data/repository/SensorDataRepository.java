@@ -18,7 +18,7 @@ public interface SensorDataRepository extends JpaRepository<SensorData, Long> {
             "sysdate() AS save_date, " +
             "AVG(value) AS value " +
             "FROM sensor_data WHERE device_id=? GROUP BY type", nativeQuery = true)
-    List<SensorData> findAvgByDeviceId(int deviceId);
+    List<SensorData> findAllByDevicAvgSensorData(Device device);
 
     List<SensorData> findAllByDevice(Device device);
 
