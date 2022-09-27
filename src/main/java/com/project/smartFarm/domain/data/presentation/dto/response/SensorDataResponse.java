@@ -1,6 +1,6 @@
-package com.project.smartFarm.domain.hydroponics.presentation.dto.response;
+package com.project.smartFarm.domain.data.presentation.dto.response;
 
-import com.project.smartFarm.global.type.SensorType;
+import com.project.smartFarm.domain.data.type.SensorType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,10 +9,8 @@ import lombok.Getter;
 @Builder
 public class SensorDataResponse {
 
-    private int deviceId;
-
     private SensorType type;
 
-    private String avgValue;
+    private String value;
 
 }
