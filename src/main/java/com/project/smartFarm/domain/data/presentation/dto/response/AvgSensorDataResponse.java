@@ -1,6 +1,5 @@
 package com.project.smartFarm.domain.data.presentation.dto.response;
 
-import com.project.smartFarm.domain.data.type.SensorType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,8 +8,13 @@ import lombok.Getter;
 @Builder
 public class AvgSensorDataResponse {
 
-    private SensorType type;
-
-    private String avgValue;
+    private String temperature;
+    private String humidity;
+    private String led;
+    private String pan;
+    private String sunlight;
+    private String pump;
+    private String liquid;
+    private String waterLevel;
 
 }

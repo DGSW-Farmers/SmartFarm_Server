@@ -1,14 +1,18 @@
 package com.project.smartFarm.domain.data.presentation.dto;
 
-import com.project.smartFarm.domain.data.type.SensorType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter @NoArgsConstructor
 public class SaveDataRequest {
 
-    private SensorType type;
-
-    private String value;
+    private String temperature;
+    private String humidity;
+    private String led;
+    private String pan;
+    private String sunlight;
+    private String pump;
+    private String liquid;
+    private String waterLevel;
 
 }

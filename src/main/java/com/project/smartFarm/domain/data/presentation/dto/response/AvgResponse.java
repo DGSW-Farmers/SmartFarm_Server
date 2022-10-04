@@ -4,14 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.util.List;
-
 @Getter @AllArgsConstructor
 @Builder
-public class AvgListResponse {
+public class AvgResponse {
 
     private int deviceId;
 
-    private List<AvgSensorDataResponse> avgList;
+    private AvgSensorDataResponse avgData;
 
 }

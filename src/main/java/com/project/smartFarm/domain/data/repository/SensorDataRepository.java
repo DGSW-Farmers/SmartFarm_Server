@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface SensorDataRepository extends JpaRepository<SensorData, Long> {
@@ -14,11 +15,17 @@ public interface SensorDataRepository extends JpaRepository<SensorData, Long> {
     @Query(value = "SELECT " +
             "0 AS id, " +
             "device_id, " +
-            "type, " +
             "sysdate() AS save_date, " +
-            "AVG(value) AS value " +
-            "FROM sensor_data WHERE device_id=? GROUP BY type", nativeQuery = true)
-    List<SensorData> findAllByDevicAvgSensorData(Device device);
+            "AVG(temperature) AS temperature, " +
+            "AVG(humidity) AS humidity, " +
+            "AVG(led) AS led, " +
+            "AVG(pan) AS pan, " +
+            "AVG(sunlight) AS sunlight, " +
+            "AVG(pump) AS pump, " +
+            "AVG(liquid) AS liquid, " +
+            "AVG(water_level) AS water_level " +
+            "FROM sensor_data WHERE device_id=? GROUP BY device_id", nativeQuery = true)
+    Optional<SensorData> findByDevicAvgSensorData(Device device);
 
     List<SensorData> findAllByDevice(Device device);
 

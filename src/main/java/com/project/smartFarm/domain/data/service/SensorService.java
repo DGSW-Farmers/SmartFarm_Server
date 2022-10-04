@@ -4,7 +4,7 @@ import com.project.smartFarm.domain.data.entity.Device;
 import com.project.smartFarm.domain.data.entity.SensorData;
 import com.project.smartFarm.domain.data.exception.DeviceNotFoundException;
 import com.project.smartFarm.domain.data.presentation.dto.SaveDataRequest;
-import com.project.smartFarm.domain.data.presentation.dto.response.AvgListResponse;
+import com.project.smartFarm.domain.data.presentation.dto.response.AvgResponse;
 import com.project.smartFarm.domain.data.presentation.dto.response.AvgSensorDataResponse;
 import com.project.smartFarm.domain.data.presentation.dto.response.DataListResponse;
 import com.project.smartFarm.domain.data.presentation.dto.response.SensorDataResponse;
@@ -34,8 +34,14 @@ public class SensorService {
 
         SensorData data = SensorData.builder()
                 .device(device)
-                .type(request.getType())
-                .value(request.getValue())
+                .temperature(request.getTemperature())
+                .humidity(request.getHumidity())
+                .liquid(request.getLiquid())
+                .sunlight(request.getSunlight())
+                .waterLevel(request.getWaterLevel())
+                .led(request.getLed())
+                .pump(request.getPump())
+                .pan(request.getPan())
                 .build();
         device.addData(data);
 
@@ -44,22 +50,26 @@ public class SensorService {
     }
 
     @Transactional(readOnly = true)
-    public AvgListResponse getAvgData(int deviceId) {
+    public AvgResponse getAvgData(int deviceId) {
         Device device = deviceRepository.findByDeviceId(deviceId)
                 .orElseThrow(DeviceNotFoundException::new);
-        List<SensorData> list = sensorDataRepository.findAllByDevicAvgSensorData(device);
-
-        List<AvgSensorDataResponse> avgList = list.stream().map(it ->
-                AvgSensorDataResponse.builder()
-                        .type(it.getType())
-                        .avgValue(it.getValue())
-                        .build()
-                ).collect(Collectors.toList());
+        SensorData data = sensorDataRepository.findByDevicAvgSensorData(device)
+                .orElseThrow();
 
         log.info("Get Average SensorData");
-        return AvgListResponse.builder()
-                .deviceId(deviceId)
-                .avgList(avgList)
+        return AvgResponse.builder()
+                .deviceId(device.getDeviceId())
+                .avgData(AvgSensorDataResponse.builder()
+                        .temperature(data.getTemperature())
+                        .humidity(data.getHumidity())
+                        .liquid(data.getLiquid())
+                        .sunlight(data.getSunlight())
+                        .waterLevel(data.getWaterLevel())
+                        .led(data.getLed())
+                        .pump(data.getPump())
+                        .pan(data.getPan())
+                        .build()
+                )
                 .build();
     }
 
@@ -69,13 +79,19 @@ public class SensorService {
         Device device = deviceRepository.findByDeviceId(deviceId)
                 .orElseThrow(DeviceNotFoundException::new);
 
-        List<SensorData> datas = sensorDataRepository.findAllByDevice(device);
+        List<SensorData> data = sensorDataRepository.findAllByDevice(device);
 
-        List<SensorDataResponse> list = datas.stream().map(it ->
-                SensorDataResponse.builder()
-                        .type(it.getType())
-                        .value(it.getValue())
-                        .build()
+        List<SensorDataResponse> list = data.stream().map(it ->
+                        SensorDataResponse.builder()
+                                .temperature(it.getTemperature())
+                                .humidity(it.getHumidity())
+                                .liquid(it.getLiquid())
+                                .sunlight(it.getSunlight())
+                                .waterLevel(it.getWaterLevel())
+                                .led(it.getLed())
+                                .pump(it.getPump())
+                                .pan(it.getPan())
+                                .build()
                 ).collect(Collectors.toList());
 
         log.info("Get All SensorData");

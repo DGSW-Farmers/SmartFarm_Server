@@ -23,7 +23,7 @@ public class DeviceController {
     public int registDevice(
             @RequestBody RegistDeviceRequest request
     ) {
-        log.info("Regist DeviceId : " + request.getDeviceId()
+        log.info("Regist :: DeviceId : " + request.getDeviceId()
                 + " Name : " + request.getName());
         return deviceService.registDevice(request);
     }
@@ -33,7 +33,7 @@ public class DeviceController {
     public DeviceResponse getDevice(
             @PathVariable("device-id") int deviceId
     ) {
-        log.info("Get DeviceId : " + deviceId);
+        log.info("Get :: DeviceId : " + deviceId);
         return deviceService.getDevice(deviceId);
     }
 
@@ -43,7 +43,7 @@ public class DeviceController {
     public void TermiteDevice(
             @PathVariable("device-id") int deviceId
     ) {
-        log.info("Termite DeviceId : " + deviceId);
+        log.info("Termite :: DeviceId : " + deviceId);
         deviceService.TermiteDevice(deviceId);
     }
 

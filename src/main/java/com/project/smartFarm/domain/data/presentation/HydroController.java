@@ -1,7 +1,7 @@
 package com.project.smartFarm.domain.data.presentation;
 
 import com.project.smartFarm.domain.data.presentation.dto.SaveDataRequest;
-import com.project.smartFarm.domain.data.presentation.dto.response.AvgListResponse;
+import com.project.smartFarm.domain.data.presentation.dto.response.AvgResponse;
 import com.project.smartFarm.domain.data.presentation.dto.response.DataListResponse;
 import com.project.smartFarm.domain.data.service.SensorService;
 import io.swagger.annotations.ApiOperation;
@@ -25,18 +25,16 @@ public class HydroController {
             @PathVariable("device-id") int deviceId,
             @RequestBody SaveDataRequest request
     ) {
-        log.info("Save SensorData DeviceId : " + deviceId +
-                " SensorType : " + request.getType() +
-                " SensorValue : " + request.getValue());
+        log.info("Save :: SensorData DeviceId : " + deviceId);
         return sensorService.saveData(deviceId, request);
     }
 
     @ApiOperation("센서 평균 값 가져오기")
     @GetMapping("/avg/{device-id}")
-    public AvgListResponse getAvgData(
+    public AvgResponse getAvgData(
             @PathVariable("device-id") int deviceId
     ) {
-        log.info("Get AvgSensorData DeviceId : " + deviceId);
+        log.info("Get :: AvgSensorData DeviceId : " + deviceId);
         return sensorService.getAvgData(deviceId);
     }
 
@@ -45,7 +43,7 @@ public class HydroController {
     public DataListResponse getData(
             @PathVariable("device-id") int deviceId
     ) {
-        log.info("Get All SensorData DeviceId : " + deviceId);
+        log.info("Get :: All SensorData DeviceId : " + deviceId);
         return sensorService.getData(deviceId);
     }
 

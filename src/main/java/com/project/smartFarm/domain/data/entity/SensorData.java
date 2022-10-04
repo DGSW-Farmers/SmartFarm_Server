@@ -1,6 +1,5 @@
 package com.project.smartFarm.domain.data.entity;
 
-import com.project.smartFarm.domain.data.type.SensorType;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -23,10 +22,14 @@ public class SensorData {
         this.device = device;
     }
 
-    @Enumerated(EnumType.STRING)
-    private SensorType type;
-
-    private String value;
+    private String temperature;
+    private String humidity;
+    private String led;
+    private String pan;
+    private String sunlight;
+    private String pump;
+    private String liquid;
+    private String waterLevel;
 
     @CreationTimestamp
     private LocalDateTime saveDate;
