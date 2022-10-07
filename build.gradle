@@ -2,6 +2,7 @@ plugins {
 	id 'org.springframework.boot' version '2.7.1'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
+	id 'war'
 }
 
 group = 'com.project'
@@ -16,14 +17,6 @@ dependencies {
 	// Lombok
 	compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.22'
 	annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.22'
-
-	// WebSocket
-	implementation 'org.springframework.boot:spring-boot-starter-websocket'
-
-	// TCP
-	implementation 'org.springframework.boot:spring-boot-starter-integration'
-	implementation 'org.springframework.integration:spring-integration-ip'
-	annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 
 	// DB
 	implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.29'
@@ -41,6 +34,7 @@ dependencies {
 
 	//Spring Boot
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '2.7.2'
+	implementation 'org.springframework.boot:spring-boot-starter-tomcat:2.7.4'
 	implementation 'org.springframework.boot:spring-boot-starter'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
