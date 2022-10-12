@@ -25,8 +25,9 @@ public interface SensorDataRepository extends JpaRepository<SensorData, Long> {
             "AVG(liquid) AS liquid, " +
             "AVG(water_level) AS water_level " +
             "FROM sensor_data WHERE device_id=? GROUP BY device_id", nativeQuery = true)
-    Optional<SensorData> findByDevicAvgSensorData(Device device);
+    SensorData findByDevicAvgSensorData(Device device);
 
+    SensorData findFirstByDeviceOrderBySaveDateDesc(Device device);
     List<SensorData> findAllByDevice(Device device);
 
 }

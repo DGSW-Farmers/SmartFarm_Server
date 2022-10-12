@@ -48,13 +48,32 @@ public class SensorService {
         log.info("Save sensorData");
         return data.getId();
     }
+    
+    @Transactional(readOnly = true)
+    public SensorDataResponse getLastDateData(int deviceId) {
+        Device device = deviceRepository.findByDeviceId(deviceId)
+                .orElseThrow(DeviceNotFoundException::new);
+
+        SensorData data = sensorDataRepository.findFirstByDeviceOrderBySaveDateDesc(device);
+
+        log.info("Get Last SensorData");
+        return SensorDataResponse.builder()
+                .temperature(data.getTemperature())
+                .humidity(data.getHumidity())
+                .liquid(data.getLiquid())
+                .sunlight(data.getSunlight())
+                .waterLevel(data.getWaterLevel())
+                .led(data.getLed())
+                .pump(data.getPump())
+                .pan(data.getPan())
+                .build();
+    }
 
     @Transactional(readOnly = true)
     public AvgResponse getAvgData(int deviceId) {
         Device device = deviceRepository.findByDeviceId(deviceId)
                 .orElseThrow(DeviceNotFoundException::new);
-        SensorData data = sensorDataRepository.findByDevicAvgSensorData(device)
-                .orElseThrow();
+        SensorData data = sensorDataRepository.findByDevicAvgSensorData(device);
 
         log.info("Get Average SensorData");
         return AvgResponse.builder()

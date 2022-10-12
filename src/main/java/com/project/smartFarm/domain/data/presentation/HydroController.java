@@ -3,6 +3,7 @@ package com.project.smartFarm.domain.data.presentation;
 import com.project.smartFarm.domain.data.presentation.dto.SaveDataRequest;
 import com.project.smartFarm.domain.data.presentation.dto.response.AvgResponse;
 import com.project.smartFarm.domain.data.presentation.dto.response.DataListResponse;
+import com.project.smartFarm.domain.data.presentation.dto.response.SensorDataResponse;
 import com.project.smartFarm.domain.data.service.SensorService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,15 @@ public class HydroController {
     ) {
         log.info("Save :: SensorData DeviceId : " + deviceId);
         return sensorService.saveData(deviceId, request);
+    }
+
+    @ApiOperation("마지막 날의 값 가져오기")
+    @GetMapping("/last/{device-id}")
+    public SensorDataResponse getLataDateData(
+            @PathVariable("device-id") int deviceId
+    ) {
+        log.info("Get :: LastDateData DeviceId : " + deviceId);
+        return sensorService.getLastDateData(deviceId);
     }
 
     @ApiOperation("센서 평균 값 가져오기")

@@ -1,0 +1,17 @@
+### 데이터 저장
+POST http://localhost:3311/hydro/1
+Content-Type: application/json
+
+{
+  "temperature": "35.9",
+  "humidity": "23.5",
+  "led": "0",
+  "pan": "1",
+  "sunlight": "28",
+  "pump": "0",
+  "liquid": "24",
+  "waterLevel": "2"
+}
+
+### 마지막날 값 가져오기
+GET http://localhost:3311/hydro/last/1
