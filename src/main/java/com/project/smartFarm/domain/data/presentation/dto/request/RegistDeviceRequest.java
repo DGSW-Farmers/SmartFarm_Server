@@ -1,4 +1,4 @@
-package com.project.smartFarm.domain.data.presentation.dto;
+package com.project.smartFarm.domain.data.presentation.dto.request;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -3,7 +3,7 @@ package com.project.smartFarm.domain.data.service;
 import com.project.smartFarm.domain.data.entity.Device;
 import com.project.smartFarm.domain.data.exception.DeviceAlreadyExistsException;
 import com.project.smartFarm.domain.data.exception.DeviceNotFoundException;
-import com.project.smartFarm.domain.data.presentation.dto.RegistDeviceRequest;
+import com.project.smartFarm.domain.data.presentation.dto.request.RegistDeviceRequest;
 import com.project.smartFarm.domain.data.presentation.dto.response.DeviceResponse;
 import com.project.smartFarm.domain.data.repository.DeviceRepository;
 import lombok.RequiredArgsConstructor;

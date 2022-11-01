@@ -1,6 +1,6 @@
 package com.project.smartFarm.domain.data.presentation;
 
-import com.project.smartFarm.domain.data.presentation.dto.RegistDeviceRequest;
+import com.project.smartFarm.domain.data.presentation.dto.request.RegistDeviceRequest;
 import com.project.smartFarm.domain.data.presentation.dto.response.DeviceResponse;
 import com.project.smartFarm.domain.data.service.DeviceService;
 import io.swagger.annotations.ApiOperation;

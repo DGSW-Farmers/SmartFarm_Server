@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.smartFarm.domain.data.mapper.SensorDataMapper">
+
+    <!-- 기간 데이터 -->
+    <select id="periodData" resultType="com.project.smartFarm.domain.data.entity.SensorData"
+            parameterType="com.project.smartFarm.domain.data.presentation.dto.request.PeriodDataSelectRequest">
+        SELECT
+            0 as id,
+            0 as device_id,
+            sysdate() as saveDate,
+            AVG(temperature) as temperature,
+            AVG(humidity) as humidity,
+            AVG(sunlight) as sunlight,
+            AVG(liquid) as liquid,
+            AVG(water_level) as waterLevel,
+            AVG(led) as led,
+            AVG(pan) as pan,
+            AVG(pump) as pump
+            FROM sensor_data
+            WHERE save_date BETWEEN #{start} AND #{end} group by device_id=#{deviceId}
+    </select>
+
+    <!-- 일별 평균 데이터 -->
+    <select id="dailyData" resultType="com.project.smartFarm.domain.data.entity.SensorData"
+            parameterType="com.project.smartFarm.domain.data.presentation.dto.request.DailyDataSelectRequest">
+        SELECT
+            0 as id,
+            #{deviceId} as device_id,
+            sysdate() as saveDate,
+            AVG(temperature) as temperature,
+            AVG(humidity) as humidity,
+            AVG(sunlight) as sunlight,
+            AVG(liquid) as liquid,
+            AVG(water_level) as waterLevel,
+            AVG(led) as led,
+            AVG(pan) as pan,
+            AVG(pump) as pump
+            FROM sensor_data
+            WHERE DATE_FORMAT(save_date, '%Y-%m-%d') = DATE_FORMAT(#{date}, '%Y-%m-%d')
+            GROUP BY device_id=#{deviceId}
+    </select>
+
+    <!-- 월별 평균 데이터 -->
+    <select id="monthData" resultType="com.project.smartFarm.domain.data.entity.SensorData"
+            parameterType="com.project.smartFarm.domain.data.presentation.dto.request.MonthDataSelectRequest">
+        SELECT
+            0 as id,
+            #{deviceId} as device_id,
+            sysdate() as saveDate,
+            AVG(temperature) as temperature,
+            AVG(humidity) as humidity,
+            AVG(sunlight) as sunlight,
+            AVG(liquid) as liquid,
+            AVG(water_level) as waterLevel,
+            AVG(led) as led,
+            AVG(pan) as pan,
+            AVG(pump) as pump
+        FROM sensor_data
+        WHERE DATE_FORMAT(save_date, '%Y-%m') = DATE_FORMAT(#{date}, '%Y-%m')
+        GROUP BY device_id=#{deviceId}
+    </select>
+</mapper>

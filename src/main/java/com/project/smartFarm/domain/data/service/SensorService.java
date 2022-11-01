@@ -3,15 +3,19 @@ package com.project.smartFarm.domain.data.service;
 import com.project.smartFarm.domain.data.entity.Device;
 import com.project.smartFarm.domain.data.entity.SensorData;
 import com.project.smartFarm.domain.data.exception.DeviceNotFoundException;
-import com.project.smartFarm.domain.data.presentation.dto.SaveDataRequest;
-import com.project.smartFarm.domain.data.presentation.dto.response.AvgResponse;
-import com.project.smartFarm.domain.data.presentation.dto.response.AvgSensorDataResponse;
-import com.project.smartFarm.domain.data.presentation.dto.response.DataListResponse;
-import com.project.smartFarm.domain.data.presentation.dto.response.SensorDataResponse;
+import com.project.smartFarm.domain.data.mapper.SensorDataMapper;
+import com.project.smartFarm.domain.data.presentation.dto.request.DailyDataSelectRequest;
+import com.project.smartFarm.domain.data.presentation.dto.request.MonthDataSelectRequest;
+import com.project.smartFarm.domain.data.presentation.dto.request.PeriodDataSelectRequest;
+import com.project.smartFarm.domain.data.presentation.dto.request.SaveDataRequest;
+import com.project.smartFarm.domain.data.presentation.dto.response.*;
 import com.project.smartFarm.domain.data.repository.DeviceRepository;
 import com.project.smartFarm.domain.data.repository.SensorDataRepository;
+import com.project.smartFarm.global.exception.BusinessException;
+import com.project.smartFarm.global.utils.ResponseUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +29,7 @@ public class SensorService {
 
     private final DeviceRepository deviceRepository;
     private final SensorDataRepository sensorDataRepository;
+    private final SensorDataMapper sensorDataMapper;
 
     @Transactional
     public Long saveData(int deviceId, SaveDataRequest request) {
@@ -57,16 +62,7 @@ public class SensorService {
         SensorData data = sensorDataRepository.findFirstByDeviceOrderBySaveDateDesc(device);
 
         log.info("Get Last SensorData");
-        return SensorDataResponse.builder()
-                .temperature(data.getTemperature())
-                .humidity(data.getHumidity())
-                .liquid(data.getLiquid())
-                .sunlight(data.getSunlight())
-                .waterLevel(data.getWaterLevel())
-                .led(data.getLed())
-                .pump(data.getPump())
-                .pan(data.getPan())
-                .build();
+        return ResponseUtils.getSensorData(data);
     }
 
     @Transactional(readOnly = true)
@@ -78,17 +74,7 @@ public class SensorService {
         log.info("Get Average SensorData");
         return AvgResponse.builder()
                 .deviceId(device.getDeviceId())
-                .avgData(AvgSensorDataResponse.builder()
-                        .temperature(data.getTemperature())
-                        .humidity(data.getHumidity())
-                        .liquid(data.getLiquid())
-                        .sunlight(data.getSunlight())
-                        .waterLevel(data.getWaterLevel())
-                        .led(data.getLed())
-                        .pump(data.getPump())
-                        .pan(data.getPan())
-                        .build()
-                )
+                .avgData(ResponseUtils.getAvgSensorData(data))
                 .build();
     }
 
@@ -100,24 +86,54 @@ public class SensorService {
 
         List<SensorData> data = sensorDataRepository.findAllByDevice(device);
 
-        List<SensorDataResponse> list = data.stream().map(it ->
-                        SensorDataResponse.builder()
-                                .temperature(it.getTemperature())
-                                .humidity(it.getHumidity())
-                                .liquid(it.getLiquid())
-                                .sunlight(it.getSunlight())
-                                .waterLevel(it.getWaterLevel())
-                                .led(it.getLed())
-                                .pump(it.getPump())
-                                .pan(it.getPan())
-                                .build()
-                ).collect(Collectors.toList());
+        List<SensorDataResponse> list = data.stream()
+                .map(ResponseUtils::getSensorData)
+                .collect(Collectors.toList());
 
         log.info("Get All SensorData");
         return DataListResponse.builder()
                 .deviceId(deviceId)
                 .list(list)
                 .build();
+    }
+
+    @Transactional(readOnly = true)
+    public AvgResponse getDailyAvgData(DailyDataSelectRequest request) {
+        Device device = deviceRepository.findByDeviceId(request.getDeviceId())
+                .orElseThrow(DeviceNotFoundException::new);
+
+        SensorData data = sensorDataMapper.dailyData(request);
+
+        log.info("data : " + data);
+        if (data == null) throw new BusinessException(HttpStatus.NOT_FOUND, "데이터가 존재하지 않습니다");
+
+        return new AvgResponse(request.getDeviceId(), ResponseUtils.getAvgSensorData(data));
+    }
+
+    @Transactional(readOnly = true)
+    public AvgResponse getMonthAvgData(MonthDataSelectRequest request) {
+        Device device = deviceRepository.findByDeviceId(request.getDeviceId())
+                .orElseThrow(DeviceNotFoundException::new);
+
+        SensorData data = sensorDataMapper.monthData(request);
+
+        log.info("data : " + data);
+        if (data == null) throw new BusinessException(HttpStatus.NOT_FOUND, "데이터가 존재하지 않습니다");
+
+        return new AvgResponse(request.getDeviceId(), ResponseUtils.getAvgSensorData(data));
+    }
+
+    @Transactional(readOnly = true)
+    public AvgResponse getPeriodData(PeriodDataSelectRequest request) {
+        Device device = deviceRepository.findByDeviceId(request.getDeviceId())
+                .orElseThrow(DeviceNotFoundException::new);
+
+        SensorData data = sensorDataMapper.periodData(request);
+
+        if(data == null) throw new BusinessException(HttpStatus.NOT_FOUND, "데이터가 존재하지 않습니다");
+
+        return new AvgResponse(device.getDeviceId(), ResponseUtils.getAvgSensorData(data));
+
     }
 
 }

@@ -1,6 +1,9 @@
 package com.project.smartFarm.domain.data.presentation;
 
-import com.project.smartFarm.domain.data.presentation.dto.SaveDataRequest;
+import com.project.smartFarm.domain.data.presentation.dto.request.DailyDataSelectRequest;
+import com.project.smartFarm.domain.data.presentation.dto.request.MonthDataSelectRequest;
+import com.project.smartFarm.domain.data.presentation.dto.request.PeriodDataSelectRequest;
+import com.project.smartFarm.domain.data.presentation.dto.request.SaveDataRequest;
 import com.project.smartFarm.domain.data.presentation.dto.response.AvgResponse;
 import com.project.smartFarm.domain.data.presentation.dto.response.DataListResponse;
 import com.project.smartFarm.domain.data.presentation.dto.response.SensorDataResponse;
@@ -57,4 +60,30 @@ public class HydroController {
         return sensorService.getData(deviceId);
     }
 
+    @ApiOperation("일별 평균 센서 값 가져오기")
+    @GetMapping("/daily")
+    public AvgResponse getDailyData(
+            @RequestBody DailyDataSelectRequest request
+    ) {
+        log.info("Get :: DailyData DeviceId : " + request.getDeviceId());
+        return sensorService.getDailyAvgData(request);
+    }
+
+    @ApiOperation("월별 평균 센서 값 가져오기")
+    @GetMapping("/month")
+    public AvgResponse getMonthData(
+            @RequestBody MonthDataSelectRequest request
+    ) {
+        log.info("Get :: MonthData DeviceId : " + request.getDeviceId());
+        return sensorService.getMonthAvgData(request);
+    }
+
+    @ApiOperation("기간별 센서 값 가져오기")
+    @GetMapping("/period")
+    public AvgResponse getPeriodData(
+            @RequestBody PeriodDataSelectRequest request
+    ) {
+        log.info("Get :: PeriodData DeviceId : " + request.getDeviceId());
+        return sensorService.getPeriodData(request);
+    }
 }
